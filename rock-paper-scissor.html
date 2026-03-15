@@ -8,16 +8,22 @@
         <button onclick="playGame('rock')">Rock</button>
         <button onclick="playGame('paper')">Paper</button>
         <button onclick="playGame('scissor')">Scissor</button>
+        <p class="js-result"></p>
+        <p class="js-moves"></p>
+        <p class="js-scores"></p>
         <button onclick="
             score.wins = 0;
             score.loses = 0;
             score.ties = 0;
             localStorage.removeItem('score');
+            updateScoreElement();
         ">Reset Score</button>
     </body>
     
     <script>
         const score = JSON.parse(localStorage.getItem('score')) || { wins: 0, loses: 0, ties: 0 };
+
+        updateScoreElement();
 
         function playGame(choice) {
             const computerChoice = computerMove();
@@ -39,7 +45,16 @@
             }
 
             localStorage.setItem('score', JSON.stringify(score));
-            alert(`You picked ${choice}, Computer picked ${computerChoice}. \nResult: ${result}\nWins: ${score.wins}, Loses: ${score.loses}, Ties: ${score.ties}`);
+
+            updateScoreElement();
+
+            document.querySelector('.js-result').innerHTML = result;
+
+            document.querySelector('.js-moves').innerHTML = `You ${choice}  -  ${computerChoice} Computer`;
+        }
+
+        function updateScoreElement() {
+            document.querySelector('.js-scores').innerHTML = `Wins: ${score.wins}, Loses: ${score.loses}, Ties: ${score.ties}`;
         }
 
         function computerMove() {
